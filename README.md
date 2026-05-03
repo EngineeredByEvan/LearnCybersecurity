@@ -3,9 +3,10 @@
 Personal-use cyber security learning roadmap app (Next.js + TypeScript).
 
 ## Current Status
-- Phase 1 scaffold complete (roadmap, path pages, lesson pages).
-- Phase 2 prototype in progress (simulated terminal with first Linux exercises).
+- Phase 1 scaffold complete (roadmap, path pages, lesson pages, settings page).
+- Phase 2 prototype in progress (simulated terminal with foundational Linux exercises).
 - Progress persistence implemented with localStorage + import/export in Settings.
+- Current branch has been re-reviewed as the post-conflict canonical baseline.
 
 ## Run
 
@@ -14,6 +15,8 @@ npm install
 npm run dev
 ```
 
-
-## Merge Resolution
-- Re-reviewed after merge and normalized to the latest local implementation state.
+## What’s Next
+- xterm.js integration
+- Tier 1 full curriculum content
+- Tier 2 + SOC Analyst path content
+- Labs library + cheat sheets + AI tutor toggle
