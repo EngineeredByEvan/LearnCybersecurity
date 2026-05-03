@@ -13,5 +13,10 @@ export const lessonExercises: Record<string, { prompt: string; hints: string[]; 
     prompt: 'Display the content of notes.txt in your home folder.',
     hints: ['Use cat with a relative or absolute path.', 'You can run ls first.'],
     validator: (h) => h.some((c) => c.includes('cat') && c.includes('notes.txt'))
+  },
+  'l-linux-4': {
+    prompt: 'Find log entries containing "Accepted" in /var/log/auth.log.',
+    hints: ['Use cat with grep.', 'Pipes are supported: command1 | command2'],
+    validator: (h) => h.some((c) => c.includes('cat /var/log/auth.log | grep Accepted'))
   }
 };

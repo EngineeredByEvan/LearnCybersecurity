@@ -1,3 +1,12 @@
+'use client';
+
+import Link from 'next/link';
+import { paths } from '@/data/curriculum';
+import { useProgress } from '@/components/progress/ProgressProvider';
+
+export default function PathPage({ params }: { params: { pathId: string } }) {
+  const path = paths.find((p) => p.id === params.pathId);
+  const { progress } = useProgress();
 import Link from 'next/link';
 import { paths } from '@/data/curriculum';
 
@@ -16,6 +25,7 @@ export default function PathPage({ params }: { params: { pathId: string } }) {
               {m.lessons.map((l) => (
                 <li key={l.id}>
                   <Link href={`/lesson/${l.id}`} className="hover:text-cyber">{l.title} ({l.minutes}m, {l.difficulty})</Link>
+                  {progress.lessons[l.id]?.completed && <span className="ml-2 text-cyber">✔</span>}
                 </li>
               ))}
             </ul>

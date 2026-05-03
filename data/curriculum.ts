@@ -5,6 +5,12 @@ export type Path = { id: string; title: string; recommended?: boolean; modules: 
 export const paths: Path[] = [
   { id: 'foundations', title: 'Tier 1: Foundations', modules: [
     { id: 'm1-1', title: '1.1 Computing Fundamentals', lessons: [{ id: 'l-1', title: 'Data Representation', minutes: 20, difficulty: 'Easy' }] },
+    { id: 'm1-2', title: '1.2 Linux Essentials', lessons: [
+      { id: 'l-linux-1', title: 'Linux: ls Navigation', minutes: 15, difficulty: 'Easy' },
+      { id: 'l-linux-2', title: 'Linux: pwd and directories', minutes: 15, difficulty: 'Easy' },
+      { id: 'l-linux-3', title: 'Linux: read files with cat', minutes: 20, difficulty: 'Easy' },
+      { id: 'l-linux-4', title: 'Linux: grep with pipes', minutes: 20, difficulty: 'Easy' }
+    ] }
     { id: 'm1-2', title: '1.2 Linux Essentials', lessons: [{ id: 'l-2', title: 'Linux Navigation Basics', minutes: 25, difficulty: 'Easy' }] }
   ]},
   { id: 'security-foundations', title: 'Tier 2: Security Foundations', modules: [
