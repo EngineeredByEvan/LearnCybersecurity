@@ -7,6 +7,7 @@ Personal-use cyber security learning roadmap app (Next.js + TypeScript).
 - Phase 2 prototype in progress (simulated terminal with foundational Linux exercises).
 - Progress persistence implemented with localStorage + import/export in Settings.
 - Current branch has been re-reviewed as the post-conflict canonical baseline.
+Phase 1 scaffold for a personal cyber security learning platform.
 
 ## Run
 

@@ -35,6 +35,11 @@ export const loadProgress = (): ProgressState => {
 
 export const saveProgress = (state: ProgressState): void => {
   localStorage.setItem(KEY, JSON.stringify({ ...state, lastActive: new Date().toISOString() }));
+export const loadProgress = (): ProgressState => {
+  if (typeof window === 'undefined') return { version: 1, lastActive: new Date().toISOString(), lessons: {} };
+  const raw = localStorage.getItem(KEY);
+  if (!raw) return { version: 1, lastActive: new Date().toISOString(), lessons: {} };
+  return JSON.parse(raw) as ProgressState;
 };
 
 export const completeLesson = (lessonId: string): ProgressState => {
@@ -60,4 +65,9 @@ export const importProgress = (raw: string): { ok: boolean; message: string } =>
   } catch {
     return { ok: false, message: 'Invalid JSON' };
   }
+};
+  state.lessons[lessonId] = { completed: true, completedAt: new Date().toISOString(), attempts: (state.lessons[lessonId]?.attempts ?? 0) + 1 };
+  state.lastActive = new Date().toISOString();
+  localStorage.setItem(KEY, JSON.stringify(state));
+  return state;
 };
