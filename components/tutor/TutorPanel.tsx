@@ -8,6 +8,12 @@ export default function TutorPanel({ lessonTitle }: { lessonTitle: string }) {
   const [a, setA] = useState('');
 
   const ask = async () => {
+    const apiKey = localStorage.getItem('anthropic_api_key') ?? '';
+    const res = await fetch('/api/tutor', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonTitle, question: q, apiKey })
+    });
+    const json = await res.json() as { answer: string; fallback?: boolean };
+    setA(json.fallback ? `${json.answer} (fallback mode)` : json.answer);
     const res = await fetch('/api/tutor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonTitle, question: q }) });
     const json = await res.json();
     setA(json.answer);
