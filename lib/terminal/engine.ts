@@ -1,5 +1,4 @@
 import { createDefaultFS, deleteNode, getNode, makeDir, normalizePath, writeFile } from './filesystem';
-import { createDefaultFS, getNode, normalizePath } from './filesystem';
 import { parseCommand } from './parser';
 import { TerminalState } from './types';
 
