@@ -10,3 +10,7 @@
 - Could not run `npm install` in this environment due to registry access restrictions.
 - xterm.js is not yet integrated because dependencies could not be fetched; current terminal UI uses a lightweight custom renderer with a command engine.
 - Remaining Tier 1+ content and full 20-command set are pending next iterations.
+
+
+## Merge Resolution
+- Re-reviewed after merge and normalized to the latest local implementation state.

@@ -13,3 +13,7 @@ Personal-use cyber security learning roadmap app (Next.js + TypeScript).
 npm install
 npm run dev
 ```
+
+
+## Merge Resolution
+- Re-reviewed after merge and normalized to the latest local implementation state.
