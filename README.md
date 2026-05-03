@@ -1,11 +1,6 @@
 # CyberPath
 
-Personal-use cyber security learning roadmap app (Next.js + TypeScript).
-
-## Current Status
-- Phase 1 scaffold complete (roadmap, path pages, lesson pages).
-- Phase 2 prototype in progress (simulated terminal with first Linux exercises).
-- Progress persistence implemented with localStorage + import/export in Settings.
+Phase 1 scaffold for a personal cyber security learning platform.
 
 ## Run
 
@@ -13,7 +8,3 @@ Personal-use cyber security learning roadmap app (Next.js + TypeScript).
 npm install
 npm run dev
 ```
-
-
-## Merge Resolution
-- Re-reviewed after merge and normalized to the latest local implementation state.
