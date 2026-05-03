@@ -1,5 +1,6 @@
 import './globals.css';
 import Link from 'next/link';
+import { ProgressProvider } from '@/components/progress/ProgressProvider';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
