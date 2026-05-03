@@ -14,6 +14,9 @@ export default function TutorPanel({ lessonTitle }: { lessonTitle: string }) {
     });
     const json = await res.json() as { answer: string; fallback?: boolean };
     setA(json.fallback ? `${json.answer} (fallback mode)` : json.answer);
+    const res = await fetch('/api/tutor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonTitle, question: q }) });
+    const json = await res.json();
+    setA(json.answer);
   };
 
   return (

@@ -29,4 +29,7 @@ export const parseCommand = (input: string): { cmd: string; args: string[]; pipe
   if (!right) return parsed;
   const rt = tokenize(right);
   return { ...parsed, pipe: { cmd: rt[0] ?? '', args: rt.slice(1) } };
+export const parseCommand = (input: string): { cmd: string; args: string[] } => {
+  const tokens = input.trim().split(/\s+/).filter(Boolean);
+  return { cmd: tokens[0] ?? '', args: tokens.slice(1) };
 };
