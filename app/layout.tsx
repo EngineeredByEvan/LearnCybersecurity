@@ -13,6 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <nav className="space-x-4 text-sm">
                 <Link href="/">Roadmap</Link>
                 <Link href="/path/foundations">Foundations</Link>
+                <Link href="/labs">Labs</Link>
                 <Link href="/settings">Settings</Link>
               </nav>
             </div>

@@ -7,6 +7,7 @@ import { lessonContent } from '@/data/lessonContent';
 import { completeLesson } from '@/lib/progress';
 import { useProgress } from '@/components/progress/ProgressProvider';
 import CheatSheetDrawer from './CheatSheetDrawer';
+import TutorPanel from '@/components/tutor/TutorPanel';
 
 export default function LessonShell({ lessonId }: { lessonId: string }) {
   const [showHint, setShowHint] = useState(0);
@@ -64,6 +65,8 @@ export default function LessonShell({ lessonId }: { lessonId: string }) {
         </section>
       </div>
       <CheatSheetDrawer />
+      <TutorPanel lessonTitle={lessonId} />
+    </>
     </>
     <div className="grid gap-4 lg:grid-cols-5">
       <section className="rounded-lg border border-border bg-surface p-4 lg:col-span-2">

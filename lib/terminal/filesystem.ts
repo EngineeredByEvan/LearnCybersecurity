@@ -31,3 +31,31 @@ export const getNode = (root: FSNode, path: string): FSNode | undefined => {
   }
   return current;
 };
+
+const getParent = (root: FSNode, path: string): { parent?: FSNode; name: string } => {
+  const parts = path.split('/').filter(Boolean);
+  const name = parts.pop() ?? '';
+  const parentPath = '/' + parts.join('/');
+  return { parent: getNode(root, parentPath), name };
+};
+
+export const writeFile = (root: FSNode, path: string, content: string): boolean => {
+  const { parent, name } = getParent(root, path);
+  if (!parent || parent.type !== 'dir' || !name) return false;
+  parent.children[name] = { type: 'file', content };
+  return true;
+};
+
+export const makeDir = (root: FSNode, path: string): boolean => {
+  const { parent, name } = getParent(root, path);
+  if (!parent || parent.type !== 'dir' || !name) return false;
+  parent.children[name] = { type: 'dir', children: {} };
+  return true;
+};
+
+export const deleteNode = (root: FSNode, path: string): boolean => {
+  const { parent, name } = getParent(root, path);
+  if (!parent || parent.type !== 'dir' || !parent.children[name]) return false;
+  delete parent.children[name];
+  return true;
+};

@@ -1,3 +1,4 @@
+import { createDefaultFS, deleteNode, getNode, makeDir, normalizePath, writeFile } from './filesystem';
 import { createDefaultFS, getNode, normalizePath } from './filesystem';
 import { parseCommand } from './parser';
 import { TerminalState } from './types';
@@ -68,6 +69,21 @@ export const runCommand = (state: TerminalState, input: string): TerminalState =
     return next;
   }
 
+  if (cmd === 'mkdir') {
+    const ok = makeDir(next.fs, normalizePath(next.cwd, args[0]));
+    next.output.push(ok ? '' : `mkdir: cannot create directory '${args[0] ?? ''}'`);
+    return next;
+  }
+
+  if (cmd === 'touch') {
+    const ok = writeFile(next.fs, normalizePath(next.cwd, args[0]), '');
+    next.output.push(ok ? '' : `touch: cannot touch '${args[0] ?? ''}'`);
+    return next;
+  }
+
+  if (cmd === 'rm') {
+    const ok = deleteNode(next.fs, normalizePath(next.cwd, args[0]));
+    next.output.push(ok ? '' : `rm: cannot remove '${args[0] ?? ''}'`);
   if (cmd === 'mkdir' || cmd === 'touch') {
     next.output.push(`${cmd}: operation not yet available in prototype shell`);
     return next;
