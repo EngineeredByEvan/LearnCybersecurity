@@ -7,6 +7,11 @@ import { useProgress } from '@/components/progress/ProgressProvider';
 export default function PathPage({ params }: { params: { pathId: string } }) {
   const path = paths.find((p) => p.id === params.pathId);
   const { progress } = useProgress();
+import Link from 'next/link';
+import { paths } from '@/data/curriculum';
+
+export default function PathPage({ params }: { params: { pathId: string } }) {
+  const path = paths.find((p) => p.id === params.pathId);
   if (!path) return <div>Path not found.</div>;
 
   return (

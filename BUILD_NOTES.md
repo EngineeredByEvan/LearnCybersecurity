@@ -18,3 +18,8 @@
 3. Expand terminal engine to full command target set with better filesystem mutability.
 4. Implement Tier 2 content and SOC Path A content.
 5. Add Labs library, cheat sheets, and optional AI tutor API route/settings.
+- Implemented Phase 1 skeleton only (scaffold, roadmap, path page, lesson shell, localStorage progress utility).
+
+## Deviations
+- Could not run `npm install` in this environment due to registry access restrictions.
+- Terminal engine (Phase 2+) and curriculum content (Phase 3+) not yet implemented.
