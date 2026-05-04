@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { exportProgress, importProgress } from '@/lib/progress';
 
 export default function SettingsPage() {
@@ -26,6 +27,13 @@ export default function SettingsPage() {
       <div className="rounded border border-border bg-surface p-4">
         <h2 className="mb-2 font-semibold">Export Progress</h2>
         <button className="rounded bg-cyber/20 px-3 py-2 text-cyber" onClick={() => setPayload(exportProgress())}>Generate Export JSON</button>
+        <h2 className="mb-2 font-semibold">Export Progress</h2>
+        <button
+          className="rounded bg-cyber/20 px-3 py-2 text-cyber"
+          onClick={() => setPayload(exportProgress())}
+        >
+          Generate Export JSON
+        </button>
       </div>
       <div className="rounded border border-border bg-surface p-4">
         <h2 className="mb-2 font-semibold">Import Progress</h2>

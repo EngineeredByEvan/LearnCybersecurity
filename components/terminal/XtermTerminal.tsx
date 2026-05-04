@@ -4,6 +4,9 @@ import { useEffect, useRef } from 'react';
 import { Terminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
+import { Terminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
+import 'xterm/css/xterm.css';
 import { createInitialState, runCommand } from '@/lib/terminal/engine';
 
 export default function XtermTerminal({ onComplete }: { onComplete?: (history: string[]) => void }) {
@@ -30,6 +33,10 @@ export default function XtermTerminal({ onComplete }: { onComplete?: (history: s
         const previousLen = Math.max(0, state.output.length - 2);
         const lines = state.output.slice(previousLen);
         lines.forEach((line) => line && term.writeln(line));
+        state = runCommand(state, buffer.trim());
+        term.writeln('');
+        const latest = state.output[state.output.length - 1];
+        if (latest) term.writeln(latest);
         onComplete?.(state.history);
         buffer = '';
         term.write('$ ');
