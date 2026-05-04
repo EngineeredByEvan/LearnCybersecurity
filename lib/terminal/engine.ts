@@ -21,17 +21,21 @@ const manPages: Record<string, string> = {
   chown: 'chown: change file owner and group',
   sed: 'sed: stream editor',
   awk: 'awk: pattern scanning and processing language'
-  touch: 'touch: create empty file'
 };
 
 export const createInitialState = (): TerminalState => ({
-  cwd: '/home/learner', history: [], output: ['Welcome to CyberPath shell. Type man ls or ls.'], fs: createDefaultFS(), user: 'learner'
+  cwd: '/home/learner',
+  history: [],
+  output: ['Welcome to CyberPath shell. Type man ls or ls.'],
+  fs: createDefaultFS(),
+  user: 'learner'
 });
 
 const applySimple = (cmd: string, args: string[], state: TerminalState, stdin = ''): string => {
   if (cmd === 'pwd') return state.cwd;
   if (cmd === 'whoami') return state.user;
   if (cmd === 'echo') return args.join(' ');
+
   if (cmd === 'ls') {
     const target = normalizePath(state.cwd, args[0]);
     const node = getNode(state.fs, target);
@@ -39,19 +43,23 @@ const applySimple = (cmd: string, args: string[], state: TerminalState, stdin = 
     if (node.type === 'file') return args[0] ?? '';
     return Object.keys(node.children).join('  ');
   }
+
   if (cmd === 'cat') {
     const target = normalizePath(state.cwd, args[0]);
     const node = getNode(state.fs, target);
     if (!node || node.type !== 'file') return `cat: ${args[0] ?? ''}: No such file`;
     return node.content;
   }
+
   if (cmd === 'grep') {
     const pattern = args[0] ?? '';
     const src = stdin || applySimple('cat', [args[1] ?? ''], state);
     return src.split('\n').filter((line) => line.includes(pattern)).join('\n') || '';
   }
+
   if (cmd === 'head') return (stdin || '').split('\n').slice(0, Number(args[1] ?? args[0] ?? 10)).join('\n');
   if (cmd === 'tail') return (stdin || '').split('\n').slice(-Number(args[1] ?? args[0] ?? 10)).join('\n');
+
   if (cmd === 'wc') {
     const src = stdin || '';
     const lines = src ? src.split('\n').length : 0;
@@ -62,25 +70,35 @@ const applySimple = (cmd: string, args: string[], state: TerminalState, stdin = 
 
   if (cmd === 'find') {
     const root = args[0] ?? state.cwd;
-    const needle = (args[2] ?? '').replaceAll('*','');
+    const needle = (args[2] ?? '').replaceAll('*', '');
     const walk = (node: any, base: string, out: string[]) => {
-      if (node.type === 'file') { if (!needle || base.includes(needle)) out.push(base); return; }
-      for (const [name, child] of Object.entries(node.children)) walk(child, `${base}/${name}`.replace('//','/'), out);
+      if (node.type === 'file') {
+        if (!needle || base.includes(needle)) out.push(base);
+        return;
+      }
+      for (const [name, child] of Object.entries(node.children)) {
+        walk(child, `${base}/${name}`.replace('//', '/'), out);
+      }
     };
-    const n = getNode(state.fs, normalizePath(state.cwd, root));
-    if (!n) return `find: '${root}': No such file or directory`;
-    const out: string[] = []; walk(n, normalizePath(state.cwd, root), out); return out.join('\n');
+
+    const node = getNode(state.fs, normalizePath(state.cwd, root));
+    if (!node) return `find: '${root}': No such file or directory`;
+    const out: string[] = [];
+    walk(node, normalizePath(state.cwd, root), out);
+    return out.join('\n');
   }
+
   if (cmd === 'sed') {
     const expr = args[0] ?? '';
     const src = stdin || '';
-    const m = expr.match(/^s\/(.*)\/(.*)\/$/);
-    if (!m) return src;
-    return src.replace(new RegExp(m[1], 'g'), m[2]);
+    const match = expr.match(/^s\/(.*)\/(.*)\/$/);
+    if (!match) return src;
+    return src.replace(new RegExp(match[1], 'g'), match[2]);
   }
+
   if (cmd === 'awk') {
     const src = stdin || '';
-    if ((args[0] ?? '').includes('{print $1}')) return src.split('\n').map(l=>l.split(/\s+/)[0] ?? '').join('\n');
+    if ((args[0] ?? '').includes('{print $1}')) return src.split('\n').map((line) => line.split(/\s+/)[0] ?? '').join('\n');
     return src;
   }
 
@@ -122,7 +140,10 @@ export const runCommand = (state: TerminalState, input: string): TerminalState =
   if (cmd === 'cp' || cmd === 'mv') {
     const from = getNode(next.fs, normalizePath(next.cwd, args[0]));
     const toPath = normalizePath(next.cwd, args[1]);
-    if (!from || from.type !== 'file') { next.output.push(`${cmd}: cannot stat '${args[0] ?? ''}'`); return next; }
+    if (!from || from.type !== 'file') {
+      next.output.push(`${cmd}: cannot stat '${args[0] ?? ''}'`);
+      return next;
+    }
     writeFile(next.fs, toPath, from.content);
     if (cmd === 'mv') deleteNode(next.fs, normalizePath(next.cwd, args[0]));
     next.output.push('');
@@ -131,55 +152,10 @@ export const runCommand = (state: TerminalState, input: string): TerminalState =
 
   if (cmd === 'chmod' || cmd === 'chown') {
     next.output.push(`${cmd}: simulated (no permission model in prototype)`);
-  if (cmd === 'mkdir' || cmd === 'touch') {
-    next.output.push(`${cmd}: operation not yet available in prototype shell`);
     return next;
   }
 
   const left = applySimple(cmd, args, next);
-  if (!pipe) next.output.push(left);
-  else next.output.push(applySimple(pipe.cmd, pipe.args, next, left));
-  cd: 'cd: change directory'
-};
-
-export const createInitialState = (): TerminalState => ({
-  cwd: '/home/learner',
-  history: [],
-  output: ['Welcome to CyberPath shell. Type man ls or ls.'],
-  fs: createDefaultFS(),
-  user: 'learner'
-});
-
-export const runCommand = (state: TerminalState, input: string): TerminalState => {
-  const { cmd, args } = parseCommand(input);
-  const next = { ...state, history: [...state.history, input], output: [...state.output, `$ ${input}`] };
-  const write = (line: string) => next.output.push(line);
-
-  if (!cmd) return next;
-
-  if (cmd === 'pwd') write(next.cwd);
-  else if (cmd === 'whoami') write(next.user);
-  else if (cmd === 'ls') {
-    const target = normalizePath(next.cwd, args[0]);
-    const node = getNode(next.fs, target);
-    if (!node) write(`ls: cannot access '${args[0] ?? '.'}': No such file or directory`);
-    else if (node.type === 'file') write(args[0] ?? '');
-    else write(Object.keys(node.children).join('  '));
-  } else if (cmd === 'cd') {
-    const target = normalizePath(next.cwd, args[0] ?? '/home/learner');
-    const node = getNode(next.fs, target);
-    if (!node || node.type !== 'dir') write(`cd: ${args[0] ?? ''}: No such file or directory`);
-    else next.cwd = target;
-  } else if (cmd === 'cat') {
-    const target = normalizePath(next.cwd, args[0]);
-    const node = getNode(next.fs, target);
-    if (!node || node.type !== 'file') write(`cat: ${args[0] ?? ''}: No such file`);
-    else write(node.content);
-  } else if (cmd === 'man') {
-    write(manPages[args[0] ?? ''] ?? `No manual entry for ${args[0] ?? ''}`);
-  } else {
-    write(`bash: ${cmd}: command not found (hint: try man <command>)`);
-  }
-
+  next.output.push(!pipe ? left : applySimple(pipe.cmd, pipe.args, next, left));
   return next;
 };
