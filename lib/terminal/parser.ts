@@ -2,6 +2,7 @@ export const tokenize = (input: string): string[] => {
   const out: string[] = [];
   let cur = '';
   let quote: '"' | "'" | '' = '';
+
   for (const ch of input.trim()) {
     if ((ch === '"' || ch === "'") && !quote) {
       quote = ch as '"' | "'";
@@ -18,18 +19,18 @@ export const tokenize = (input: string): string[] => {
     }
     cur += ch;
   }
+
   if (cur) out.push(cur);
   return out;
 };
 
 export const parseCommand = (input: string): { cmd: string; args: string[]; pipe?: { cmd: string; args: string[] } } => {
-  const [left, right] = input.split('|').map((s) => s.trim());
-  const lt = tokenize(left);
-  const parsed = { cmd: lt[0] ?? '', args: lt.slice(1) };
+  const [left, right] = input.split('|').map((segment) => segment.trim());
+  const leftTokens = tokenize(left);
+  const parsed = { cmd: leftTokens[0] ?? '', args: leftTokens.slice(1) };
+
   if (!right) return parsed;
-  const rt = tokenize(right);
-  return { ...parsed, pipe: { cmd: rt[0] ?? '', args: rt.slice(1) } };
-export const parseCommand = (input: string): { cmd: string; args: string[] } => {
-  const tokens = input.trim().split(/\s+/).filter(Boolean);
-  return { cmd: tokens[0] ?? '', args: tokens.slice(1) };
+
+  const rightTokens = tokenize(right);
+  return { ...parsed, pipe: { cmd: rightTokens[0] ?? '', args: rightTokens.slice(1) } };
 };
