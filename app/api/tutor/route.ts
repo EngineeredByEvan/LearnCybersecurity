@@ -19,8 +19,9 @@ export async function POST(req: NextRequest) {
           messages: [{ role: 'user', content: `Lesson: ${lessonTitle}\nQuestion: ${question}` }]
         })
       });
+
       if (response.ok) {
-        const json = await response.json() as { content?: Array<{ text?: string }> };
+        const json = (await response.json()) as { content?: Array<{ text?: string }> };
         return NextResponse.json({ answer: json.content?.[0]?.text ?? 'No response content.' });
       }
     } catch {
@@ -30,7 +31,4 @@ export async function POST(req: NextRequest) {
 
   const answer = `Hint for ${lessonTitle}: Break the task into smaller steps. Start by identifying the command category, check man pages, and test incrementally. Your question was: ${question}`;
   return NextResponse.json({ answer, fallback: true });
-  const { lessonTitle, question } = await req.json();
-  const answer = `Hint for ${lessonTitle}: Break the task into smaller steps. Start by identifying the command category, check man pages, and test incrementally. Your question was: ${question}`;
-  return NextResponse.json({ answer });
 }
